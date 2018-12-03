@@ -11,7 +11,11 @@ BuildRequires:  autoconf
 BuildRequires:  gcc-c++
 BuildRequires:  libtool
 BuildRequires:  pkgconfig(libde265)
+%if 0%{?fedora}
 BuildRequires:  pkgconfig(libjpeg)
+%else
+BuildRequires:  libjpeg-devel
+%endif
 BuildRequires:  pkgconfig(libpng)
 BuildRequires:  pkgconfig(x265)
 
