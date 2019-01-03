@@ -1,6 +1,6 @@
 Name:           libheif
 Version:        1.3.2
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        HEIF file format decoder and encoder
 
 License:        LGPLv3+ and MIT
@@ -71,6 +71,9 @@ find %buildroot -name '*.la' -or -name '*.a' | xargs rm -f
 
 
 %changelog
+* Thu Jan 03 2019 Leigh Scott <leigh123linux@googlemail.com> - 1.3.2-2
+- Rebuild for new x265 for el7
+
 * Thu Nov 29 2018 Leigh Scott <leigh123linux@googlemail.com> - 1.3.2-1
 - First build
 
