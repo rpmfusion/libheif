@@ -1,6 +1,6 @@
 Name:           libheif
-Version:        1.3.2
-Release:        2%{?dist}
+Version:        1.4.0
+Release:        1%{?dist}
 Summary:        HEIF file format decoder and encoder
 
 License:        LGPLv3+ and MIT
@@ -10,6 +10,7 @@ Source0:        %{url}/archive/v%{version}/%{name}-%{version}.tar.gz
 BuildRequires:  autoconf
 BuildRequires:  gcc-c++
 BuildRequires:  libtool
+BuildRequires:  pkgconfig(gdk-pixbuf-2.0)
 BuildRequires:  pkgconfig(libde265)
 %if 0%{?fedora}
 BuildRequires:  pkgconfig(libjpeg)
@@ -61,6 +62,7 @@ find %buildroot -name '*.la' -or -name '*.a' | xargs rm -f
 %{_bindir}/heif-info
 %{_bindir}/heif-thumbnailer
 %{_libdir}/*.so.1*
+%{_libdir}/gdk-pixbuf-2.0/*/loaders/libpixbufloader-heif.*
 %{_datadir}/mime/packages/heif.xml
 %{_datadir}/thumbnailers/
 
@@ -71,6 +73,9 @@ find %buildroot -name '*.la' -or -name '*.a' | xargs rm -f
 
 
 %changelog
+* Thu Feb 28 2019 Leigh Scott <leigh123linux@googlemail.com> - 1.4.0-1
+- Update to 1.4.0
+
 * Thu Jan 03 2019 Leigh Scott <leigh123linux@googlemail.com> - 1.3.2-2
 - Rebuild for new x265 for el7
 
