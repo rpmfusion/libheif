@@ -1,5 +1,5 @@
 Name:           libheif
-Version:        1.5.1
+Version:        1.6.0
 Release:        1%{?dist}
 Summary:        HEIF file format decoder and encoder
 
@@ -73,6 +73,10 @@ find %buildroot -name '*.la' -or -name '*.a' | xargs rm -f
 
 
 %changelog
+* Thu Nov 28 2019 Leigh Scott <leigh123linux@googlemail.com> - 1.6.0-1
+- Update to 1.6.0
+- Rebuilt for x265
+
 * Sun Nov 03 2019 Leigh Scott <leigh123linux@googlemail.com> - 1.5.1-1
 - Update to 1.5.1
 
