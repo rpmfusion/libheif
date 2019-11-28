@@ -65,6 +65,7 @@ find %buildroot -name '*.la' -or -name '*.a' | xargs rm -f
 %{_libdir}/gdk-pixbuf-2.0/*/loaders/libpixbufloader-heif.*
 %{_datadir}/mime/packages/heif.xml
 %{_datadir}/thumbnailers/
+%{_mandir}/man1/heif-*
 
 %files devel
 %{_includedir}/*
