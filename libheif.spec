@@ -1,6 +1,6 @@
 Name:           libheif
 Version:        1.6.2
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        HEIF file format decoder and encoder
 
 License:        LGPLv3+ and MIT
@@ -74,6 +74,9 @@ find %buildroot -name '*.la' -or -name '*.a' | xargs rm -f
 
 
 %changelog
+* Sun May 31 2020 Leigh Scott <leigh123linux@gmail.com> - 1.6.2-3
+- Rebuild for new x265 version
+
 * Sun Feb 23 2020 RPM Fusion Release Engineering <leigh123linux@googlemail.com> - 1.6.2-2
 - Rebuild for x265
 
