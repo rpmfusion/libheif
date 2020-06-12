@@ -1,6 +1,6 @@
 Name:           libheif
-Version:        1.6.2
-Release:        3%{?dist}
+Version:        1.7.0
+Release:        1%{?dist}
 Summary:        HEIF file format decoder and encoder
 
 License:        LGPLv3+ and MIT
@@ -11,6 +11,7 @@ BuildRequires:  autoconf
 BuildRequires:  gcc-c++
 BuildRequires:  libtool
 BuildRequires:  pkgconfig(gdk-pixbuf-2.0)
+BuildRequires:  pkgconfig(aom)
 BuildRequires:  pkgconfig(libde265)
 %if 0%{?fedora}
 BuildRequires:  pkgconfig(libjpeg)
@@ -42,7 +43,7 @@ NOCONFIGURE=1 ./autogen.sh
 
 
 %build
-%configure
+%configure  --disable-static
 %make_build
 
 
@@ -74,6 +75,9 @@ find %buildroot -name '*.la' -or -name '*.a' | xargs rm -f
 
 
 %changelog
+* Thu Jun 04 2020 Leigh Scott <leigh123linux@gmail.com> - 1.7.0-1
+- Update to 1.7.0
+
 * Sun May 31 2020 Leigh Scott <leigh123linux@gmail.com> - 1.6.2-3
 - Rebuild for new x265 version
 
