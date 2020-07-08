@@ -1,6 +1,6 @@
 Name:           libheif
 Version:        1.7.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        HEIF file format decoder and encoder
 
 License:        LGPLv3+ and MIT
@@ -75,6 +75,9 @@ find %buildroot -name '*.la' -or -name '*.a' | xargs rm -f
 
 
 %changelog
+* Wed Jul 08 2020 Leigh Scott <leigh123linux@gmail.com> - 1.7.0-2
+- Rebuilt
+
 * Thu Jun 04 2020 Leigh Scott <leigh123linux@gmail.com> - 1.7.0-1
 - Update to 1.7.0
 
