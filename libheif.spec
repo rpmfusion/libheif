@@ -1,11 +1,12 @@
 Name:           libheif
-Version:        1.7.0
-Release:        3%{?dist}
+Version:        1.8.0
+Release:        1%{?dist}
 Summary:        HEIF file format decoder and encoder
 
 License:        LGPLv3+ and MIT
 URL:            https://github.com/strukturag/%{name}
 Source0:        %{url}/archive/v%{version}/%{name}-%{version}.tar.gz
+Patch0:         system_rav1e.patch
 
 BuildRequires:  autoconf
 BuildRequires:  gcc-c++
@@ -19,6 +20,9 @@ BuildRequires:  pkgconfig(libjpeg)
 BuildRequires:  libjpeg-devel
 %endif
 BuildRequires:  pkgconfig(libpng)
+%if 0%{?fedora} > 32
+BuildRequires:  pkgconfig(rav1e)
+%endif
 BuildRequires:  pkgconfig(x265)
 
 Requires:  shared-mime-info
@@ -38,12 +42,15 @@ developing applications that use %{name}.
 
 
 %prep
-%autosetup
+%autosetup -p1
 NOCONFIGURE=1 ./autogen.sh
 
 
 %build
-%configure  --disable-static
+%configure  --disable-static \
+%if 0%{?fedora} > 32
+ --enable-local-rav1e
+%endif
 %make_build
 
 
@@ -64,7 +71,7 @@ find %buildroot -name '*.la' -or -name '*.a' | xargs rm -f
 %{_bindir}/heif-thumbnailer
 %{_libdir}/*.so.1*
 %{_libdir}/gdk-pixbuf-2.0/*/loaders/libpixbufloader-heif.*
-%{_datadir}/mime/packages/heif.xml
+%{_datadir}/mime/packages/*.xml
 %{_datadir}/thumbnailers/
 %{_mandir}/man1/heif-*
 
@@ -75,6 +82,9 @@ find %buildroot -name '*.la' -or -name '*.a' | xargs rm -f
 
 
 %changelog
+* Fri Aug 28 2020 Leigh Scott <leigh123linux@gmail.com> - 1.8.0-1
+- Update to 1.8.0
+
 * Tue Aug 18 2020 RPM Fusion Release Engineering <leigh123linux@gmail.com> - 1.7.0-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_33_Mass_Rebuild
 
