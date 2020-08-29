@@ -51,6 +51,7 @@ NOCONFIGURE=1 ./autogen.sh
 %if 0%{?fedora} > 32
  --enable-local-rav1e
 %endif
+
 %make_build
 
 
