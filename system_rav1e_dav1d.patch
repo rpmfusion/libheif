@@ -1,0 +1,43 @@
+diff -uNrp a/libheif/heif_encoder_rav1e.cc b/libheif/heif_encoder_rav1e.cc
+--- a/libheif/heif_encoder_rav1e.cc	2020-09-25 09:28:40.000000000 +0100
++++ b/libheif/heif_encoder_rav1e.cc	2020-10-27 14:31:44.692222806 +0000
+@@ -34,7 +34,7 @@
+ 
+ #include <iostream>  // TODO: remove me
+ 
+-#include "rav1e/rav1e.h"
++#include <rav1e/rav1e.h>
+ 
+ 
+ struct encoder_struct_rav1e
+diff -uNrp a/libheif/Makefile.am b/libheif/Makefile.am
+--- a/libheif/Makefile.am	2020-09-25 09:28:40.000000000 +0100
++++ b/libheif/Makefile.am	2020-10-27 14:36:13.730638570 +0000
+@@ -22,11 +22,11 @@ ADDITIONAL_LIBS += $(x265_LIBS)
+ endif
+ 
+ if ENABLE_LOCAL_RAV1E
+-ADDITIONAL_LIBS += ../third-party/rav1e/target/release/librav1e.a -ldl
++ADDITIONAL_LIBS += -lrav1e -ldl
+ endif
+ 
+ if ENABLE_LOCAL_DAV1D
+-ADDITIONAL_LIBS += ../third-party/dav1d/build/src/libdav1d.a -ldl
++ADDITIONAL_LIBS += -ldav1d -ldl
+ endif
+ 
+ libheif_la_CPPFLAGS =
+@@ -42,11 +42,11 @@ libheif_la_CXXFLAGS = \
+ libheif_la_LIBADD = $(ADDITIONAL_LIBS)
+ 
+ if ENABLE_LOCAL_RAV1E
+-libheif_la_CXXFLAGS += -I../third-party/rav1e/target/release/include
++libheif_la_CXXFLAGS += -I/usr/include/
+ endif
+ 
+ if ENABLE_LOCAL_DAV1D
+-libheif_la_CXXFLAGS += -I../third-party/dav1d/build -I../third-party/dav1d/build/include -I../third-party/dav1d/build/include/dav1d -I../third-party/dav1d/include
++libheif_la_CXXFLAGS += -I/usr/include/
+ endif
+ 
+ libheif_la_LDFLAGS = -version-info $(LIBHEIF_CURRENT):$(LIBHEIF_REVISION):$(LIBHEIF_AGE)

@@ -1,18 +1,19 @@
 Name:           libheif
-Version:        1.8.0
+Version:        1.9.1
 Release:        1%{?dist}
 Summary:        HEIF file format decoder and encoder
 
 License:        LGPLv3+ and MIT
 URL:            https://github.com/strukturag/%{name}
 Source0:        %{url}/archive/v%{version}/%{name}-%{version}.tar.gz
-Patch0:         system_rav1e.patch
+Patch0:         system_rav1e_dav1d.patch
 
 BuildRequires:  autoconf
 BuildRequires:  gcc-c++
 BuildRequires:  libtool
 BuildRequires:  pkgconfig(gdk-pixbuf-2.0)
 BuildRequires:  pkgconfig(aom)
+BuildRequires:  pkgconfig(dav1d)
 BuildRequires:  pkgconfig(libde265)
 %if 0%{?fedora}
 BuildRequires:  pkgconfig(libjpeg)
@@ -44,10 +45,12 @@ developing applications that use %{name}.
 %prep
 %autosetup -p1
 NOCONFIGURE=1 ./autogen.sh
+rm -rf third-party/
 
 
 %build
 %configure  --disable-static \
+ --enable-local-dav1d \
 %if 0%{?fedora} > 32
  --enable-local-rav1e
 %endif
@@ -83,6 +86,9 @@ find %buildroot -name '*.la' -or -name '*.a' | xargs rm -f
 
 
 %changelog
+* Tue Oct 27 2020 Leigh Scott <leigh123linux@gmail.com> - 1.9.1-1
+- Update to 1.9.1
+
 * Fri Aug 28 2020 Leigh Scott <leigh123linux@gmail.com> - 1.8.0-1
 - Update to 1.8.0
 
