@@ -1,6 +1,6 @@
 Name:           libheif
 Version:        1.9.1
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        HEIF file format decoder and encoder
 
 License:        LGPLv3+ and MIT
@@ -86,6 +86,9 @@ find %buildroot -name '*.la' -or -name '*.a' | xargs rm -f
 
 
 %changelog
+* Mon Dec 14 2020 Leigh Scott <leigh123linux@gmail.com> - 1.9.1-3
+- Actually do the dav1d rebuild
+
 * Mon Dec 14 2020 Robert-André Mauchin <zebob.m@gmail.com> - 1.9.1-2
 - Rebuild for dav1d SONAME bump
 
