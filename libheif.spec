@@ -1,12 +1,11 @@
 Name:           libheif
-Version:        1.9.1
-Release:        3%{?dist}
+Version:        1.10.0
+Release:        1%{?dist}
 Summary:        HEIF file format decoder and encoder
 
 License:        LGPLv3+ and MIT
 URL:            https://github.com/strukturag/%{name}
 Source0:        %{url}/archive/v%{version}/%{name}-%{version}.tar.gz
-Patch0:         system_rav1e_dav1d.patch
 
 BuildRequires:  autoconf
 BuildRequires:  gcc-c++
@@ -86,6 +85,9 @@ find %buildroot -name '*.la' -or -name '*.a' | xargs rm -f
 
 
 %changelog
+* Sat Dec 19 2020 Leigh Scott <leigh123linux@gmail.com> - 1.10.0-1
+- Update to 1.10.0
+
 * Mon Dec 14 2020 Leigh Scott <leigh123linux@gmail.com> - 1.9.1-3
 - Actually do the dav1d rebuild
 
