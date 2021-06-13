@@ -1,6 +1,6 @@
 Name:           libheif
 Version:        1.8.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        HEIF file format decoder and encoder
 
 License:        LGPLv3+ and MIT
@@ -82,6 +82,9 @@ find %buildroot -name '*.la' -or -name '*.a' | xargs rm -f
 
 
 %changelog
+* Sun Jun 13 2021 Robert-André Mauchin <zebob.m@gmail.com> - 1.8.0-2
+- Rebuild for new aom
+
 * Fri Aug 28 2020 Leigh Scott <leigh123linux@gmail.com> - 1.8.0-1
 - Update to 1.8.0
 
