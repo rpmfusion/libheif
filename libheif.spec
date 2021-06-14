@@ -1,6 +1,6 @@
 Name:           libheif
-Version:        1.11.0
-Release:        3%{?dist}
+Version:        1.12.0
+Release:        1%{?dist}
 Summary:        HEIF file format decoder and encoder
 
 License:        LGPLv3+ and MIT
@@ -16,13 +16,11 @@ BuildRequires:  pkgconfig(dav1d)
 BuildRequires:  pkgconfig(libde265)
 %if 0%{?fedora}
 BuildRequires:  pkgconfig(libjpeg)
+BuildRequires:  pkgconfig(rav1e)
 %else
 BuildRequires:  libjpeg-devel
 %endif
 BuildRequires:  pkgconfig(libpng)
-%if 0%{?fedora} > 32
-BuildRequires:  pkgconfig(rav1e)
-%endif
 BuildRequires:  pkgconfig(x265)
 
 Requires:  shared-mime-info
@@ -50,7 +48,7 @@ rm -rf third-party/
 %build
 %configure  --disable-static \
  --enable-local-dav1d \
-%if 0%{?fedora} > 32
+%if 0%{?fedora}
  --enable-local-rav1e
 %endif
 
@@ -85,6 +83,9 @@ find %buildroot -name '*.la' -or -name '*.a' | xargs rm -f
 
 
 %changelog
+* Mon Jun 14 2021 Leigh Scott <leigh123linux@gmail.com> - 1.12.0-1
+- Update to 1.12.0
+
 * Sun Jun 13 2021 Robert-André Mauchin <zebob.m@gmail.com> - 1.11.0-3
 - Rebuild for new aom
 
