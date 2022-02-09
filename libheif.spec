@@ -1,6 +1,6 @@
 Name:           libheif
 Version:        1.12.0
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        HEIF file format decoder and encoder
 
 License:        LGPLv3+ and MIT
@@ -83,6 +83,9 @@ find %buildroot -name '*.la' -or -name '*.a' | xargs rm -f
 
 
 %changelog
+* Wed Feb 09 2022 RPM Fusion Release Engineering <sergiomb@rpmfusion.org> - 1.12.0-4
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_36_Mass_Rebuild
+
 * Thu Nov 25 2021 Nicolas Chauvet <kwizart@gmail.com> - 1.12.0-3
 - Rebuilt
 
