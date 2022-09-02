@@ -1,15 +1,15 @@
 Name:           libheif
-Version:        1.12.0
-Release:        6%{?dist}
+Version:        1.13.0
+Release:        1%{?dist}
 Summary:        HEIF file format decoder and encoder
 
 License:        LGPLv3+ and MIT
 URL:            https://github.com/strukturag/%{name}
 Source0:        %{url}/archive/v%{version}/%{name}-%{version}.tar.gz
 
-BuildRequires:  autoconf
+BuildRequires:  cmake
 BuildRequires:  gcc-c++
-BuildRequires:  libtool
+BuildRequires:  ninja-build
 BuildRequires:  pkgconfig(gdk-pixbuf-2.0)
 BuildRequires:  pkgconfig(aom)
 BuildRequires:  pkgconfig(dav1d)
@@ -41,22 +41,22 @@ developing applications that use %{name}.
 
 %prep
 %autosetup -p1
-NOCONFIGURE=1 ./autogen.sh
 rm -rf third-party/
 
 
 %build
-%configure  --disable-static \
- --enable-local-dav1d \
-%if 0%{?fedora}
- --enable-local-rav1e
+%cmake \
+ -GNinja \
+%if 0%{?rhel}
+ -DWITH_RAV1E=OFF \
 %endif
+ -Wno-dev
 
-%make_build
+%cmake_build
 
 
 %install
-%make_install
+%cmake_install
 find %buildroot -name '*.la' -or -name '*.a' | xargs rm -f
 
 
@@ -78,11 +78,15 @@ find %buildroot -name '*.la' -or -name '*.a' | xargs rm -f
 
 %files devel
 %{_includedir}/*
+%{_libdir}/cmake/libheif/
 %{_libdir}/pkgconfig/libheif.pc
 %{_libdir}/*.so
 
 
 %changelog
+* Fri Sep 02 2022 Leigh Scott <leigh123linux@gmail.com> - 1.13.0-1
+- Update to 1.13.0
+
 * Sun Aug 07 2022 RPM Fusion Release Engineering <sergiomb@rpmfusion.org> - 1.12.0-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_37_Mass_Rebuild and ffmpeg
   5.1
