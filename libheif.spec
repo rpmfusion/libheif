@@ -1,5 +1,5 @@
 Name:           libheif
-Version:        1.13.0
+Version:        1.14.0
 Release:        1%{?dist}
 Summary:        HEIF file format decoder and encoder
 
@@ -17,6 +17,7 @@ BuildRequires:  pkgconfig(libde265)
 %if 0%{?fedora}
 BuildRequires:  pkgconfig(libjpeg)
 BuildRequires:  pkgconfig(rav1e)
+BuildRequires:  pkgconfig(SvtAv1Enc)
 %else
 BuildRequires:  libjpeg-devel
 %endif
@@ -50,6 +51,7 @@ rm -rf third-party/
 %if 0%{?rhel}
  -DWITH_RAV1E=OFF \
 %endif
+ -DPLUGIN_DIRECTORY=%{_libdir}/%{name} \
  -Wno-dev
 
 %cmake_build
@@ -71,19 +73,23 @@ find %buildroot -name '*.la' -or -name '*.a' | xargs rm -f
 %{_bindir}/heif-info
 %{_bindir}/heif-thumbnailer
 %{_libdir}/*.so.1*
+%{_libdir}/%{name}/
 %{_libdir}/gdk-pixbuf-2.0/*/loaders/libpixbufloader-heif.*
 %{_datadir}/mime/packages/*.xml
 %{_datadir}/thumbnailers/
 %{_mandir}/man1/heif-*
 
 %files devel
-%{_includedir}/*
-%{_libdir}/cmake/libheif/
-%{_libdir}/pkgconfig/libheif.pc
+%{_includedir}/%{name}/
+%{_libdir}/cmake/%{name}/
+%{_libdir}/pkgconfig/%{name}.pc
 %{_libdir}/*.so
 
 
 %changelog
+* Tue Nov 15 2022 Leigh Scott <leigh123linux@gmail.com> - 1.14.0-1
+- Update to 1.14.0
+
 * Fri Sep 02 2022 Leigh Scott <leigh123linux@gmail.com> - 1.13.0-1
 - Update to 1.13.0
 
