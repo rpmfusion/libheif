@@ -17,7 +17,9 @@ BuildRequires:  pkgconfig(libde265)
 %if 0%{?fedora}
 BuildRequires:  pkgconfig(libjpeg)
 BuildRequires:  pkgconfig(rav1e)
+%ifarch x86_64
 BuildRequires:  pkgconfig(SvtAv1Enc)
+%endif
 %else
 BuildRequires:  libjpeg-devel
 %endif
