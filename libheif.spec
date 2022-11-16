@@ -46,9 +46,6 @@ rm -rf third-party/
 %build
 %cmake \
  -GNinja \
-%if 0%{?rhel}
- -DWITH_RAV1E=OFF \
-%endif
  -DPLUGIN_DIRECTORY=%{_libdir}/%{name} \
  -Wno-dev
 
