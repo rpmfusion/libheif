@@ -14,14 +14,10 @@ BuildRequires:  pkgconfig(gdk-pixbuf-2.0)
 BuildRequires:  pkgconfig(aom)
 BuildRequires:  pkgconfig(dav1d)
 BuildRequires:  pkgconfig(libde265)
-%if 0%{?fedora}
 BuildRequires:  pkgconfig(libjpeg)
 BuildRequires:  pkgconfig(rav1e)
 %ifarch x86_64
 BuildRequires:  pkgconfig(SvtAv1Enc)
-%endif
-%else
-BuildRequires:  libjpeg-devel
 %endif
 BuildRequires:  pkgconfig(libpng)
 BuildRequires:  pkgconfig(x265)
