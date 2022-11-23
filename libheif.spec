@@ -1,6 +1,6 @@
 Name:           libheif
 Version:        1.14.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        HEIF file format decoder and encoder
 
 License:        LGPLv3+ and MIT
@@ -82,6 +82,9 @@ find %buildroot -name '*.la' -or -name '*.a' | xargs rm -f
 
 
 %changelog
+* Wed Nov 23 2022 Nicolas Chauvet <kwizart@gmail.com> - 1.14.0-2
+- Enable svt-av1 on el9
+
 * Tue Nov 15 2022 Leigh Scott <leigh123linux@gmail.com> - 1.14.0-1
 - Update to 1.14.0
 
