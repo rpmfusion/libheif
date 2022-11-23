@@ -16,10 +16,8 @@ BuildRequires:  pkgconfig(dav1d)
 BuildRequires:  pkgconfig(libde265)
 BuildRequires:  pkgconfig(libjpeg)
 BuildRequires:  pkgconfig(rav1e)
-%if 0%{?fedora}
 %ifarch x86_64
 BuildRequires:  pkgconfig(SvtAv1Enc)
-%endif
 %endif
 BuildRequires:  pkgconfig(libpng)
 BuildRequires:  pkgconfig(x265)
