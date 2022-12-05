@@ -56,6 +56,8 @@ rm -rf third-party/
 %cmake_install
 find %buildroot -name '*.la' -or -name '*.a' | xargs rm -f
 
+# Can be dropped on upgrade to >1.14.0
+#https://github.com/strukturag/libheif/commit/1e4a3d101769570694846956843a49378899933f
 %ifarch x86_64
 sed -e '/private/s/SvtEnc/SvtAv1Enc/' -i %{buildroot}/usr/lib64/pkgconfig/libheif.pc
 %endif
