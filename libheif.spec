@@ -1,6 +1,6 @@
 Name:           libheif
 Version:        1.14.0
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        HEIF file format decoder and encoder
 
 License:        LGPLv3+ and MIT
@@ -56,6 +56,9 @@ rm -rf third-party/
 %cmake_install
 find %buildroot -name '*.la' -or -name '*.a' | xargs rm -f
 
+%ifarch x86_64
+sed -e '/private/s/SvtEnc/SvtAv1Enc/' -i %{buildroot}/usr/lib64/pkgconfig/libheif.pc
+%endif
 
 %ldconfig_scriptlets
 
@@ -82,6 +85,9 @@ find %buildroot -name '*.la' -or -name '*.a' | xargs rm -f
 
 
 %changelog
+* Mon Dec 05 2022 Nicolas Chauvet <kwizart@gmail.com> - 1.14.0-3
+- Fix for SvtAv1Enc in devel - rfbz#6521
+
 * Wed Nov 23 2022 Nicolas Chauvet <kwizart@gmail.com> - 1.14.0-2
 - Enable svt-av1 on el9
 
