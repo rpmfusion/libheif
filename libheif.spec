@@ -1,6 +1,6 @@
 Name:           libheif
 Version:        1.14.0
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        HEIF file format decoder and encoder
 
 License:        LGPLv3+ and MIT
@@ -46,7 +46,8 @@ rm -rf third-party/
 %build
 %cmake \
  -GNinja \
- -DPLUGIN_DIRECTORY=%{_libdir}/%{name} \
+ -DWITH_RAV1E_PLUGIN=OFF \
+ -DWITH_SvtEnc_PLUGIN=OFF \
  -Wno-dev
 
 %cmake_build
@@ -73,7 +74,6 @@ sed -e '/private/s/SvtEnc/SvtAv1Enc/' -i %{buildroot}/usr/lib64/pkgconfig/libhei
 %{_bindir}/heif-info
 %{_bindir}/heif-thumbnailer
 %{_libdir}/*.so.1*
-%{_libdir}/%{name}/
 %{_libdir}/gdk-pixbuf-2.0/*/loaders/libpixbufloader-heif.*
 %{_datadir}/mime/packages/*.xml
 %{_datadir}/thumbnailers/
@@ -87,6 +87,9 @@ sed -e '/private/s/SvtEnc/SvtAv1Enc/' -i %{buildroot}/usr/lib64/pkgconfig/libhei
 
 
 %changelog
+* Mon Dec 19 2022 Leigh Scott <leigh123linux@gmail.com> - 1.14.0-4
+- Don't build rav1e and SVT-AV1 as plugins (rfbz#6532)
+
 * Mon Dec 05 2022 Nicolas Chauvet <kwizart@gmail.com> - 1.14.0-3
 - Fix for SvtAv1Enc in devel - rfbz#6521
 
