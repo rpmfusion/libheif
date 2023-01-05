@@ -1,6 +1,6 @@
 Name:           libheif
-Version:        1.14.0
-Release:        4%{?dist}
+Version:        1.14.1
+Release:        1%{?dist}
 Summary:        HEIF file format decoder and encoder
 
 License:        LGPLv3+ and MIT
@@ -55,13 +55,6 @@ rm -rf third-party/
 
 %install
 %cmake_install
-find %buildroot -name '*.la' -or -name '*.a' | xargs rm -f
-
-# Can be dropped on upgrade to >1.14.0
-#https://github.com/strukturag/libheif/commit/1e4a3d101769570694846956843a49378899933f
-%ifarch x86_64
-sed -e '/private/s/SvtEnc/SvtAv1Enc/' -i %{buildroot}/usr/lib64/pkgconfig/libheif.pc
-%endif
 
 %ldconfig_scriptlets
 
@@ -87,6 +80,9 @@ sed -e '/private/s/SvtEnc/SvtAv1Enc/' -i %{buildroot}/usr/lib64/pkgconfig/libhei
 
 
 %changelog
+* Thu Jan 05 2023 Leigh Scott <leigh123linux@gmail.com> - 1.14.1-1
+- Update to 1.14.1
+
 * Mon Dec 19 2022 Leigh Scott <leigh123linux@gmail.com> - 1.14.0-4
 - Don't build rav1e and SVT-AV1 as plugins (rfbz#6532)
 
