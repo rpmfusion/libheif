@@ -1,5 +1,5 @@
 Name:           libheif
-Version:        1.14.1
+Version:        1.14.2
 Release:        1%{?dist}
 Summary:        HEIF file format decoder and encoder
 
@@ -7,9 +7,10 @@ License:        LGPLv3+ and MIT
 URL:            https://github.com/strukturag/%{name}
 Source0:        %{url}/archive/v%{version}/%{name}-%{version}.tar.gz
 
-BuildRequires:  cmake
+BuildRequires:  autoconf
+BuildRequires:  libtool
 BuildRequires:  gcc-c++
-BuildRequires:  ninja-build
+BuildRequires:  make
 BuildRequires:  pkgconfig(gdk-pixbuf-2.0)
 BuildRequires:  pkgconfig(aom)
 BuildRequires:  pkgconfig(dav1d)
@@ -37,24 +38,26 @@ Requires:       %{name}%{?_isa} = %{version}-%{release}
 The %{name}-devel package contains libraries and header files for
 developing applications that use %{name}.
 
-
 %prep
 %autosetup -p1
 rm -rf third-party/
 
+NOCONFIGURE=1 ./autogen.sh
+
 
 %build
-%cmake \
- -GNinja \
- -DWITH_RAV1E_PLUGIN=OFF \
- -DWITH_SvtEnc_PLUGIN=OFF \
- -Wno-dev
+%configure \
+%ifarch x86_64
+ --enable-svt
+%endif
 
-%cmake_build
+%make_build
 
 
 %install
-%cmake_install
+%make_install
+
+find %buildroot -name '*.la' -or -name '*.a' | xargs rm -f
 
 %ldconfig_scriptlets
 
@@ -74,12 +77,14 @@ rm -rf third-party/
 
 %files devel
 %{_includedir}/%{name}/
-%{_libdir}/cmake/%{name}/
 %{_libdir}/pkgconfig/%{name}.pc
 %{_libdir}/*.so
 
-
 %changelog
+* Sat Jan 07 2023 Leigh Scott <leigh123linux@gmail.com> - 1.14.2-1
+- Update to 1.14.2
+- Switch back to autotools to build due to cmake issues (rfbz#6550}
+
 * Thu Jan 05 2023 Leigh Scott <leigh123linux@gmail.com> - 1.14.1-1
 - Update to 1.14.1
 
