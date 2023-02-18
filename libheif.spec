@@ -6,20 +6,19 @@ Summary:        HEIF file format decoder and encoder
 License:        LGPLv3+ and MIT
 URL:            https://github.com/strukturag/%{name}
 Source0:        %{url}/archive/v%{version}/%{name}-%{version}.tar.gz
+# gcc-13 fix
+Patch0:         %{url}/commit/910588338cf2a17207c09b315baddf003e86316c.patch
 
-BuildRequires:  autoconf
-BuildRequires:  libtool
+BuildRequires:  cmake
 BuildRequires:  gcc-c++
-BuildRequires:  make
+BuildRequires:  ninja-build
 BuildRequires:  pkgconfig(gdk-pixbuf-2.0)
 BuildRequires:  pkgconfig(aom)
 BuildRequires:  pkgconfig(dav1d)
 BuildRequires:  pkgconfig(libde265)
 BuildRequires:  pkgconfig(libjpeg)
 BuildRequires:  pkgconfig(rav1e)
-%ifarch x86_64
 BuildRequires:  pkgconfig(SvtAv1Enc)
-%endif
 BuildRequires:  pkgconfig(libpng)
 BuildRequires:  pkgconfig(x265)
 
@@ -42,20 +41,17 @@ developing applications that use %{name}.
 %autosetup -p1
 rm -rf third-party/
 
-NOCONFIGURE=1 ./autogen.sh
-
-
 %build
-%configure \
-%ifarch x86_64
- --enable-svt
-%endif
+%cmake \
+ -GNinja \
+ -DPLUGIN_DIRECTORY=%{_libdir}/%{name} \
+ -Wno-dev
 
-%make_build
+%cmake_build
 
 
 %install
-%make_install
+%cmake_install
 
 find %buildroot -name '*.la' -or -name '*.a' | xargs rm -f
 
@@ -70,13 +66,14 @@ find %buildroot -name '*.la' -or -name '*.a' | xargs rm -f
 %{_bindir}/heif-info
 %{_bindir}/heif-thumbnailer
 %{_libdir}/*.so.1*
+%{_libdir}/%{name}/
 %{_libdir}/gdk-pixbuf-2.0/*/loaders/libpixbufloader-heif.*
-%{_datadir}/mime/packages/*.xml
 %{_datadir}/thumbnailers/
 %{_mandir}/man1/heif-*
 
 %files devel
 %{_includedir}/%{name}/
+%{_libdir}/cmake/%{name}/
 %{_libdir}/pkgconfig/%{name}.pc
 %{_libdir}/*.so
 
