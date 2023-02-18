@@ -1,5 +1,5 @@
 Name:           libheif
-Version:        1.14.2
+Version:        1.15.1
 Release:        1%{?dist}
 Summary:        HEIF file format decoder and encoder
 
@@ -81,6 +81,9 @@ find %buildroot -name '*.la' -or -name '*.a' | xargs rm -f
 %{_libdir}/*.so
 
 %changelog
+* Fri Feb 17 2023 Leigh Scott <leigh123linux@gmail.com> - 1.15.1-1
+- Update to 1.15.1
+
 * Sat Jan 07 2023 Leigh Scott <leigh123linux@gmail.com> - 1.14.2-1
 - Update to 1.14.2
 - Switch back to autotools to build due to cmake issues (rfbz#6550}
