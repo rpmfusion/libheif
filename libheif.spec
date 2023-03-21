@@ -17,13 +17,14 @@ Patch0:         %{url}/commit/910588338cf2a17207c09b315baddf003e86316c.patch
 BuildRequires:  cmake
 BuildRequires:  gcc-c++
 BuildRequires:  ninja-build
-BuildRequires:  pkgconfig(gdk-pixbuf-2.0)
 BuildRequires:  pkgconfig(aom)
 BuildRequires:  pkgconfig(dav1d)
 BuildRequires:  pkgconfig(libjpeg)
 BuildRequires:  pkgconfig(libpng)
-%if ! (0%{?rhel} && 0%{?rhel} < 9)
+%if ! (0%{?rhel} && 0%{?rhel} <= 9)
 BuildRequires:  pkgconfig(rav1e)
+%endif
+%if ! ((0%{?rhel} && 0%{?rhel} <= 9) || (0%{?fedora} && 0%{?fedora} < 38))
 BuildRequires:  pkgconfig(SvtAv1Enc)
 %endif
 
@@ -36,8 +37,10 @@ file format decoder and encoder.
 %doc README.md
 %{_libdir}/*.so.%{somajor}{,.*}
 %dir %{_libdir}/%{name}
-%if ! (0%{?rhel} && 0%{?rhel} < 9)
+%if ! (0%{?rhel} && 0%{?rhel} <= 9)
 %{_libdir}/%{name}/%{name}-rav1e.so
+%endif
+%if ! ((0%{?rhel} && 0%{?rhel} <= 9) || (0%{?fedora} && 0%{?fedora} < 38))
 %{_libdir}/%{name}/%{name}-svtenc.so
 %endif
 
@@ -45,11 +48,12 @@ file format decoder and encoder.
 
 %package -n     heif-pixbuf-loader
 Summary:        HEIF image loader for GTK+ applications
+BuildRequires:  pkgconfig(gdk-pixbuf-2.0)
 Requires:       %{name}%{?_isa} = %{version}-%{release}
 Requires:       gdk-pixbuf2%{?_isa}
 
 %description -n heif-pixbuf-loader
-This package provides a plugin to load HEIC files in GTK+ applications.
+This package provides a plugin to load HEIF files in GTK+ applications.
 
 %files -n heif-pixbuf-loader
 %{_libdir}/gdk-pixbuf-2.0/*/loaders/libpixbufloader-heif.so
@@ -57,13 +61,13 @@ This package provides a plugin to load HEIC files in GTK+ applications.
 # ----------------------------------------------------------------------
 
 %package        tools
-Summary:        Tools for manipulating HEIC files
+Summary:        Tools for manipulating HEIF files
 License:        MIT
 Requires:       %{name}%{?_isa} = %{version}-%{release}
 Requires:       shared-mime-info
 
 %description    tools
-This package provides tools for manipulating HEIC files.
+This package provides tools for manipulating HEIF files.
 
 %files tools
 %{_bindir}/heif-*
