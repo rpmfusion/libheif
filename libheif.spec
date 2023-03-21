@@ -143,7 +143,12 @@ rm -rv \
    .%{_includedir} \
    .%{_libdir}/cmake \
    .%{_libdir}/libheif.so* \
-   .%{_libdir}/libheif/libheif-{rav1e,svtenc}.so \
+%if ! (0%{?rhel} && 0%{?rhel} <= 9)
+   .%{_libdir}/%{name}/%{name}-rav1e.so \
+%endif
+%if ! ((0%{?rhel} && 0%{?rhel} <= 9) || (0%{?fedora} && 0%{?fedora} < 38))
+   .%{_libdir}/%{name}/%{name}-svtenc.so \
+%endif
    .%{_libdir}/gdk-pixbuf-2.0 \
    .%{_libdir}/pkgconfig \
    .%{_mandir} \
