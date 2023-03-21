@@ -32,6 +32,7 @@ BuildRequires:  pkgconfig(SvtAv1Enc)
 libheif is an ISO/IEC 23008-12:2017 HEIF and AVIF (AV1 Image File Format)
 file format decoder and encoder.
 
+%if %{without hevc}
 %files
 %license COPYING
 %doc README.md
@@ -42,6 +43,7 @@ file format decoder and encoder.
 %endif
 %if ! ((0%{?rhel} && 0%{?rhel} <= 9) || (0%{?fedora} && 0%{?fedora} < 38))
 %{_libdir}/%{name}/%{name}-svtenc.so
+%endif
 %endif
 
 # ----------------------------------------------------------------------
@@ -55,6 +57,7 @@ Requires:       gdk-pixbuf2%{?_isa}
 %description -n heif-pixbuf-loader
 This package provides a plugin to load HEIF files in GTK+ applications.
 
+%if %{without hevc}
 %files -n heif-pixbuf-loader
 %{_libdir}/gdk-pixbuf-2.0/*/loaders/libpixbufloader-heif.so
 
@@ -73,6 +76,7 @@ This package provides tools for manipulating HEIF files.
 %{_bindir}/heif-*
 %{_mandir}/man1/heif-*
 %{_datadir}/thumbnailers/heif.thumbnailer
+%endif
 
 # ----------------------------------------------------------------------
 
@@ -95,6 +99,7 @@ that use %{name} to read HEIF image files.
 
 # ----------------------------------------------------------------------
 
+%if %{without hevc}
 %package        devel
 Summary:        Development files for %{name}
 Requires:       %{name}%{?_isa} = %{version}-%{release}
@@ -108,6 +113,7 @@ developing applications that use %{name}.
 %{_libdir}/cmake/%{name}/
 %{_libdir}/pkgconfig/%{name}.pc
 %{_libdir}/*.so
+%endif
 
 # ----------------------------------------------------------------------
 
@@ -130,6 +136,21 @@ rm -rf third-party/
 %install
 %cmake_install
 
+%if %{with hevc}
+pushd %{buildroot}
+rm -rv \
+   .%{_bindir} \
+   .%{_includedir} \
+   .%{_libdir}/cmake \
+   .%{_libdir}/libheif.so* \
+   .%{_libdir}/libheif/libheif-{rav1e,svtenc}.so \
+   .%{_libdir}/gdk-pixbuf-2.0 \
+   .%{_libdir}/pkgconfig \
+   .%{_mandir} \
+   .%{_datadir}/thumbnailers \
+
+popd
+%endif
 
 %check
 # Tests are not yet ported to CMake
