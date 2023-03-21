@@ -1,9 +1,14 @@
+%global somajor 1
+
+# Unable to ship this in Fedora
+%bcond_without hevc
+
 Name:           libheif
 Version:        1.15.1
-Release:        1%{?dist}
-Summary:        HEIF file format decoder and encoder
+Release:        2%{?dist}
+Summary:        HEIF and AVIF file format decoder and encoder
 
-License:        LGPLv3+ and MIT
+License:        LGPL-3.0-or-later and MIT
 URL:            https://github.com/strukturag/%{name}
 Source0:        %{url}/archive/v%{version}/%{name}-%{version}.tar.gz
 # gcc-13 fix
@@ -15,19 +20,76 @@ BuildRequires:  ninja-build
 BuildRequires:  pkgconfig(gdk-pixbuf-2.0)
 BuildRequires:  pkgconfig(aom)
 BuildRequires:  pkgconfig(dav1d)
-BuildRequires:  pkgconfig(libde265)
 BuildRequires:  pkgconfig(libjpeg)
+BuildRequires:  pkgconfig(libpng)
+%if ! (0%{?rhel} && 0%{?rhel} < 9)
 BuildRequires:  pkgconfig(rav1e)
 BuildRequires:  pkgconfig(SvtAv1Enc)
-BuildRequires:  pkgconfig(libpng)
-BuildRequires:  pkgconfig(x265)
-
-Requires:  shared-mime-info
+%endif
 
 %description
-HEIF is a image format using HEVC image coding for the best compression ratios.
-libheif uses libde265 for the actual image decoding and x265 for encoding.
-Alternative codecs for, e.g., AVC and JPEG can be provided as plugins.
+libheif is an ISO/IEC 23008-12:2017 HEIF and AVIF (AV1 Image File Format)
+file format decoder and encoder.
+
+%files
+%license COPYING
+%doc README.md
+%{_libdir}/*.so.%{somajor}{,.*}
+%dir %{_libdir}/%{name}
+%if ! (0%{?rhel} && 0%{?rhel} < 9)
+%{_libdir}/%{name}/%{name}-rav1e.so
+%{_libdir}/%{name}/%{name}-svtenc.so
+%endif
+
+# ----------------------------------------------------------------------
+
+%package -n     heif-pixbuf-loader
+Summary:        HEIF image loader for GTK+ applications
+Requires:       %{name}%{?_isa} = %{version}-%{release}
+Requires:       gdk-pixbuf2%{?_isa}
+
+%description -n heif-pixbuf-loader
+This package provides a plugin to load HEIC files in GTK+ applications.
+
+%files -n heif-pixbuf-loader
+%{_libdir}/gdk-pixbuf-2.0/*/loaders/libpixbufloader-heif.so
+
+# ----------------------------------------------------------------------
+
+%package        tools
+Summary:        Tools for manipulating HEIC files
+License:        MIT
+Requires:       %{name}%{?_isa} = %{version}-%{release}
+Requires:       shared-mime-info
+
+%description    tools
+This package provides tools for manipulating HEIC files.
+
+%files tools
+%{_bindir}/heif-*
+%{_mandir}/man1/heif-*
+%{_datadir}/thumbnailers/heif.thumbnailer
+
+# ----------------------------------------------------------------------
+
+%if %{with hevc}
+%package        hevc
+Summary:        HEVC codec support for HEIC files
+BuildRequires:  pkgconfig(libde265)
+BuildRequires:  pkgconfig(x265)
+Requires:       %{name}%{?_isa} = %{version}-%{release}
+Supplements:    %{name}
+
+%description    hevc
+This package adds support for HEVC-encoded HEIC files to applications
+that use %{name} to read HEIF image files.
+
+%files hevc
+%{_libdir}/%{name}/%{name}-libde265.so
+%{_libdir}/%{name}/%{name}-x265.so
+%endif
+
+# ----------------------------------------------------------------------
 
 %package        devel
 Summary:        Development files for %{name}
@@ -37,14 +99,25 @@ Requires:       %{name}%{?_isa} = %{version}-%{release}
 The %{name}-devel package contains libraries and header files for
 developing applications that use %{name}.
 
+%files devel
+%{_includedir}/%{name}/
+%{_libdir}/cmake/%{name}/
+%{_libdir}/pkgconfig/%{name}.pc
+%{_libdir}/*.so
+
+# ----------------------------------------------------------------------
+
+
 %prep
 %autosetup -p1
 rm -rf third-party/
+
 
 %build
 %cmake \
  -GNinja \
  -DPLUGIN_DIRECTORY=%{_libdir}/%{name} \
+ %{?with_hevc:-DWITH_LIBDE265_PLUGIN:BOOL=ON -DWITH_X265_PLUGIN:BOOL=ON} \
  -Wno-dev
 
 %cmake_build
@@ -53,31 +126,16 @@ rm -rf third-party/
 %install
 %cmake_install
 
-find %buildroot -name '*.la' -or -name '*.a' | xargs rm -f
 
-%ldconfig_scriptlets
+%check
+# Tests are not yet ported to CMake
+#ctest
 
-
-%files
-%license COPYING
-%doc README.md
-%{_bindir}/heif-convert
-%{_bindir}/heif-enc
-%{_bindir}/heif-info
-%{_bindir}/heif-thumbnailer
-%{_libdir}/*.so.1*
-%{_libdir}/%{name}/
-%{_libdir}/gdk-pixbuf-2.0/*/loaders/libpixbufloader-heif.*
-%{_datadir}/thumbnailers/
-%{_mandir}/man1/heif-*
-
-%files devel
-%{_includedir}/%{name}/
-%{_libdir}/cmake/%{name}/
-%{_libdir}/pkgconfig/%{name}.pc
-%{_libdir}/*.so
 
 %changelog
+* Fri Mar 17 2023 Neal Gompa <ngompa@fedoraproject.org> - 1.15.1-2
+- Adapt for Fedora
+
 * Fri Feb 17 2023 Leigh Scott <leigh123linux@gmail.com> - 1.15.1-1
 - Update to 1.15.1
 
