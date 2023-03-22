@@ -5,7 +5,7 @@
 
 Name:           libheif
 Version:        1.15.1
-Release:        2%{?dist}
+Release:        2%{?dist}.1
 Summary:        HEIF and AVIF file format decoder and encoder
 
 License:        LGPL-3.0-or-later and MIT
@@ -85,7 +85,6 @@ This package provides tools for manipulating HEIF files.
 Summary:        HEVC codec support for HEIC files
 BuildRequires:  pkgconfig(libde265)
 BuildRequires:  pkgconfig(x265)
-Requires:       %{name}%{?_isa} = %{version}-%{release}
 Supplements:    %{name}
 
 %description    hevc
@@ -163,6 +162,9 @@ popd
 
 
 %changelog
+* Wed Mar 22 2023 Dominik Mierzejewski <dominik@greysector.net> - 1.15.1-2.1
+- drop explicit dependency on main package from -hevc subpackage
+
 * Fri Mar 17 2023 Neal Gompa <ngompa@fedoraproject.org> - 1.15.1-2
 - Adapt for Fedora
 
