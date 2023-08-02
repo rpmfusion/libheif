@@ -5,7 +5,7 @@
 
 Name:           libheif
 Version:        1.15.1
-Release:        2%{?dist}.1
+Release:        3%{?dist}.1
 Summary:        HEIF and AVIF file format decoder and encoder
 
 License:        LGPL-3.0-or-later and MIT
@@ -157,6 +157,9 @@ popd
 
 
 %changelog
+* Wed Aug 02 2023 RPM Fusion Release Engineering <sergiomb@rpmfusion.org> - 1.15.1-3.1
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_39_Mass_Rebuild
+
 * Wed Mar 22 2023 Dominik Mierzejewski <dominik@greysector.net> - 1.15.1-2.1
 - drop explicit dependency on main package from -hevc subpackage
 
